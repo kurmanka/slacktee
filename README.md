@@ -63,6 +63,7 @@ usage: slacktee.sh [options]
     -e, --field title value           Add a field to the attachment. You can specify this multiple times
     -s, --short-field title value     Add a short field to the attachment. You can specify this multiple times
     --setup                           Set up .slacktee file interactively.
+    --config filename.conf            Use the specified file for configuration.
 ```
 
 If you'd like to post the output of `ls` command, you can do it like this.

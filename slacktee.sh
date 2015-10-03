@@ -30,16 +30,6 @@ if [[ -n "$HOME" && -e "$HOME/.slacktee" ]]; then
     . "$HOME/.slacktee"
 fi
 
-# Overwrite webhook_url if the environment variable SLACKTEE_WEBHOOK is set
-if [[ "$SLACKTEE_WEBHOOK" != "" ]]; then
-    webhook_url=$SLACKTEE_WEBHOOK
-fi
-
-# Overwrite upload_token if the environment variable SLACKTEE_TOKEN is set
-if [[ "$SLACKTEE_TOKEN" != "" ]]; then
-    upload_token=$SLACKTEE_TOKEN
-fi
-
 function show_help(){
     echo "usage: $me [options]"
     echo "  options:"
@@ -60,6 +50,7 @@ function show_help(){
     echo "    -e, --field title value           Add a field to the attachment. You can specify this multiple times"
     echo "    -s, --short-field title value     Add a short field to the attachment. You can specify this multiple times"
     echo "    --setup                           Setup slacktee interactively."
+    echo "    --config filename.conf            Use the specified file for configuration."
 }
 
 function send_message(){
@@ -294,6 +285,11 @@ while [[ $# -gt 0 ]]; do
             setup
             exit 1
 	;;
+    --config)
+            conf=$1
+            . $conf
+            shift
+    ;;
     *)
             echo "illegal option $opt"
             show_help
@@ -305,6 +301,16 @@ done
 # ----------
 # Validate configurations
 # ----------
+
+# Overwrite webhook_url if the environment variable SLACKTEE_WEBHOOK is set
+if [[ "$SLACKTEE_WEBHOOK" != "" ]]; then
+    webhook_url=$SLACKTEE_WEBHOOK
+fi
+
+# Overwrite upload_token if the environment variable SLACKTEE_TOKEN is set
+if [[ "$SLACKTEE_TOKEN" != "" ]]; then
+    upload_token=$SLACKTEE_TOKEN
+fi
 
 if [[ $webhook_url == "" ]]; then
     echo "Please setup the webhook url of this incoming webhook integration."
